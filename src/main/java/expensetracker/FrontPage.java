@@ -183,36 +183,37 @@ public class FrontPage extends javax.swing.JFrame {
         jLabel10.setText("GADGETS");
 
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("INR");
 
         gadgets_display_text.setBackground(new java.awt.Color(255, 255, 255));
         gadgets_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         gadgets_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        gadgets_display_text.setText("Gadgets amount");
+        gadgets_display_text.setText("Gadgets Amount");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(gadgets_display_text)
-                .addGap(9, 9, 9)
-                .addComponent(jLabel15)
-                .addGap(15, 15, 15))
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(gadgets_display_text)
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel15)
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(42, 42, 42))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
                     .addComponent(gadgets_display_text))
@@ -226,14 +227,14 @@ public class FrontPage extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("CLOTHS");
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("INR");
 
         cloths_display_text.setBackground(new java.awt.Color(255, 204, 255));
         cloths_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cloths_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        cloths_display_text.setText("Cloths amount");
+        cloths_display_text.setText("Cloths Amount");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -244,19 +245,19 @@ public class FrontPage extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(cloths_display_text)
-                        .addGap(15, 15, 15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel14))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                        .addGap(46, 46, 46)
                         .addComponent(jLabel9)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(49, 49, 49)
+                .addGap(41, 41, 41)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cloths_display_text)
                     .addComponent(jLabel14))
@@ -273,9 +274,9 @@ public class FrontPage extends javax.swing.JFrame {
         books_display_text.setBackground(new java.awt.Color(255, 204, 255));
         books_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         books_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        books_display_text.setText("Books amount");
+        books_display_text.setText("Books Amount");
 
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("INR");
 
@@ -283,21 +284,23 @@ public class FrontPage extends javax.swing.JFrame {
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11)
-                    .addComponent(books_display_text))
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
+                .addComponent(books_display_text)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel18)
-                .addGap(10, 10, 10))
+                .addContainerGap(27, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel11)
+                .addGap(55, 55, 55))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(books_display_text)
                     .addComponent(jLabel18))
@@ -314,9 +317,9 @@ public class FrontPage extends javax.swing.JFrame {
         grocery_display_text.setBackground(new java.awt.Color(255, 255, 255));
         grocery_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         grocery_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        grocery_display_text.setText("Grocery amount");
+        grocery_display_text.setText("Grocery Amount");
 
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("INR");
 
@@ -325,22 +328,23 @@ public class FrontPage extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(grocery_display_text)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel20)
-                .addGap(19, 19, 19))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(grocery_display_text)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel20)
+                        .addGap(19, 19, 19))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(39, 39, 39))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grocery_display_text)
                     .addComponent(jLabel20))
@@ -356,7 +360,7 @@ public class FrontPage extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
         jLabel17.setText("ENTER THE AMOUNT");
 
-        add_the_money_in_db.setBackground(new java.awt.Color(108, 73, 101));
+        add_the_money_in_db.setBackground(new java.awt.Color(102, 0, 102));
         add_the_money_in_db.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         add_the_money_in_db.setForeground(new java.awt.Color(242, 242, 242));
         add_the_money_in_db.setLabel("ADD MONEY");
@@ -408,7 +412,7 @@ public class FrontPage extends javax.swing.JFrame {
         );
 
         display_expense_table.setAutoCreateRowSorter(true);
-        display_expense_table.setFont(new java.awt.Font("Times New Roman", 0, 15)); // NOI18N
+        display_expense_table.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
         display_expense_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -435,7 +439,7 @@ public class FrontPage extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(display_expense_table);
 
-        jPanel1.setBackground(new java.awt.Color(108, 73, 101));
+        jPanel1.setBackground(new java.awt.Color(102, 0, 102));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -513,7 +517,7 @@ public class FrontPage extends javax.swing.JFrame {
             }
         });
 
-        add_expense_btn.setBackground(new java.awt.Color(108, 73, 101));
+        add_expense_btn.setBackground(new java.awt.Color(102, 0, 102));
         add_expense_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         add_expense_btn.setForeground(new java.awt.Color(255, 255, 255));
         add_expense_btn.setText("Add Expense");
@@ -620,13 +624,13 @@ public class FrontPage extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
+                        .addGap(53, 53, 53)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -674,8 +678,8 @@ public class FrontPage extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -727,7 +731,7 @@ public class FrontPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void add_the_money_in_dbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_the_money_in_dbActionPerformed
-        // TODO add your handling code here:
+        // Get the amount to be added
         String amountStr = enter_amount_text_box.getText();
         double amount = Double.parseDouble(amountStr);
 
@@ -765,7 +769,7 @@ public class FrontPage extends javax.swing.JFrame {
             pst.executeUpdate();
 
             // Update the balance_amount_display_text component
-            balance_amount_display_text.setText("Balance: " + currentBalance);
+            balance_amount_display_text.setText("Balance Amount : " + currentBalance);
 
             con.close();
         } catch (ClassNotFoundException ex) {
@@ -831,17 +835,17 @@ public class FrontPage extends javax.swing.JFrame {
 
     private void books_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_books_boxActionPerformed
         // TODO add your handling code here:
-//        category = "Books";
+        category = "Books";
     }//GEN-LAST:event_books_boxActionPerformed
 
     private void grocery_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grocery_boxActionPerformed
         // TODO add your handling code here:
-//        category = "Grocery";
+        category = "Grocery";
     }//GEN-LAST:event_grocery_boxActionPerformed
 
     private void cloths_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cloths_boxActionPerformed
         // TODO add your handling code here:
-//        category = "Cloths";
+        category = "Cloths";
     }//GEN-LAST:event_cloths_boxActionPerformed
 
     private void enter_purpose_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enter_purpose_textActionPerformed
@@ -865,7 +869,6 @@ public class FrontPage extends javax.swing.JFrame {
         } else if (books_box.isSelected()) {
             category = "Books";
         }
-
 // Balance amount ko kam karna hai
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -878,14 +881,37 @@ public class FrontPage extends javax.swing.JFrame {
             // Update the respective display text
             switch (category) {
                 case "Cloths":
+
                     cloths_display_text.setText("Cloths: " + money);
                     break;
                 case "Grocery":
                     grocery_display_text.setText("Grocery: " + money);
                     break;
                 case "Gadgets":
-                    gadgets_display_text.setText("Gadgets: " + money);
+                    int gadgetsAmount = 0; // initialization
+                    String query = "SELECT Gadgets FROM category_table WHERE username = ?";
+                    PreparedStatement pst = con.prepareStatement(query);
+                    pst.setString(1, username);
+                    ResultSet rs = pst.executeQuery();
+
+                    if (rs.next()) {
+                        gadgetsAmount = rs.getInt("gadgets");
+                    }
+
+                    // Add the incoming money to the gadgets amount
+                    gadgetsAmount += money;
+
+                    // Update the gadgets amount in category_table
+                    query = "UPDATE category_table SET gadgets = ? WHERE username = ?";
+                    pst = con.prepareStatement(query);
+                    pst.setInt(1, gadgetsAmount);
+                    pst.setString(2, username);
+                    pst.executeUpdate();
+
+                    // Update the gadgets_display_text to the new amount
+                    gadgets_display_text.setText("Gadgets: " + gadgetsAmount);
                     break;
+
                 case "Books":
                     books_display_text.setText("Books: " + money);
                     break;

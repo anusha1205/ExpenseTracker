@@ -138,28 +138,27 @@ public class Signup extends javax.swing.JFrame {
 
     private void enter_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enter_usernameActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_enter_usernameActionPerformed
 
     private void Enter_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Enter_btnActionPerformed
         // TODO add your handling code here:
-        if(enter_username.getText().trim().isEmpty() || enter_password.getText().trim().isEmpty() ){
+        if (enter_username.getText().trim().isEmpty() || enter_password.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "ALL CREDENTIALS IMPORTANT FILL THEM!!");
-        }
-        else{
+        } else {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 String db = "jdbc:mysql://localhost:3306/expensetracker";
                 String username = "root";
                 String password = "";
-                
-                Connection con = DriverManager.getConnection(db, username, password); //here also exception handling will be done
+
+                Connection con = DriverManager.getConnection(db, username, password);
                 // Check if the username already exists
                 String checkQuery = "SELECT COUNT(*) FROM user_detail WHERE username = ?";
                 PreparedStatement checkPst = con.prepareStatement(checkQuery);
                 checkPst.setString(1, enter_username.getText());
                 ResultSet rs = checkPst.executeQuery();
-                
+
                 if (rs.next() && rs.getInt(1) > 0) {
                     JOptionPane.showMessageDialog(this, "Username already exists!");
                 } else {
@@ -171,16 +170,18 @@ public class Signup extends javax.swing.JFrame {
 
                     int count = pst.executeUpdate();
                     if (count > 0) {
+                        String query2 = "INSERT INTO category_table (username) VALUES (?)";
+                        PreparedStatement pst2 = con.prepareStatement(query2);
+                        pst2.setString(1, enter_username.getText());
+                        pst2.executeUpdate();
+                        pst2.executeUpdate(); // execute the second query
                         JOptionPane.showMessageDialog(this, "Data inserted successfully!!");
                     } else {
                         JOptionPane.showMessageDialog(this, "Data insertion FAILED!!");
                     }
                 }
-                //following SQL query for entering name and gender
-                
                 con.close();//connection needs to be close
-                
-                
+
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Signup.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -205,9 +206,7 @@ public class Signup extends javax.swing.JFrame {
         // Optionally, dispose of the current login frame
         this.dispose();
     }
-    
-    
-    
+
     /**
      * @param args the command line arguments
      */
