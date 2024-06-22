@@ -43,20 +43,22 @@ public class LoginPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        login_enter_username.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        login_enter_username.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
         login_enter_username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 login_enter_usernameActionPerformed(evt);
             }
         });
 
-        name_label2.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        name_label2.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         name_label2.setText("Password : ");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setText("LOGIN PAGE DETAILS");
+        jLabel1.setText("Please Login With Required Credentials");
 
-        login_to_front_page.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        login_to_front_page.setBackground(new java.awt.Color(102, 0, 102));
+        login_to_front_page.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        login_to_front_page.setForeground(new java.awt.Color(255, 255, 255));
         login_to_front_page.setText("Login");
         login_to_front_page.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -64,8 +66,10 @@ public class LoginPage extends javax.swing.JFrame {
             }
         });
 
-        name_label.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        name_label.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         name_label.setText("Username : ");
+
+        login_enter_password.setFont(new java.awt.Font("Century Gothic", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,38 +78,38 @@ public class LoginPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(name_label2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(name_label))
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(login_enter_username, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                            .addComponent(login_enter_password)))
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
+                        .addGap(192, 192, 192)
                         .addComponent(login_to_front_page))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(96, 96, 96)
-                        .addComponent(jLabel1)))
-                .addContainerGap(80, Short.MAX_VALUE))
+                        .addGap(93, 93, 93)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(name_label)
+                            .addComponent(name_label2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(login_enter_password, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(login_enter_username, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(login_enter_username)
-                    .addComponent(name_label, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(name_label, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(login_enter_username))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(name_label2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(login_enter_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
                 .addComponent(login_to_front_page)
-                .addGap(38, 38, 38))
+                .addGap(52, 52, 52))
         );
 
         pack();
@@ -120,52 +124,52 @@ public class LoginPage extends javax.swing.JFrame {
     private void login_to_front_pageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_to_front_pageActionPerformed
         // TODO add your handling code here:
         if (login_enter_username.getText().trim().isEmpty() || login_enter_password.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "ALL CREDENTIALS IMPORTANT FILL THEM!!");
-    } else {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                String db = "jdbc:mysql://localhost:3306/expensetracker";
-                String username = "root";
-                String password = "";
+            JOptionPane.showMessageDialog(this, "ALL CREDENTIALS IMPORTANT FILL THEM!!");
+        } else {
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    String db = "jdbc:mysql://localhost:3306/expensetracker";
+                    String username = "root";
+                    String password = "";
 
-                try (Connection con = DriverManager.getConnection(db, username, password)) {
-                    // Check if the username and password are correct
-                    String checkQuery = "SELECT password FROM user_detail WHERE username = ?";
-                    try (PreparedStatement checkPst = con.prepareStatement(checkQuery)) {
-                        checkPst.setString(1, login_enter_username.getText());
-                        try (ResultSet rs = checkPst.executeQuery()) {
-                            if (rs.next()) {
-                                String storedPassword = rs.getString("password");
-                                if (storedPassword.equals(login_enter_password.getText())) {
-                                    // Credentials are correct, open the Expense_frame
-                                    JOptionPane.showMessageDialog(this, "Login in succesful !!");
-                                    openFrontPage();
+                    try (Connection con = DriverManager.getConnection(db, username, password)) {
+                        // Check if the username and password are correct
+                        String checkQuery = "SELECT password FROM user_detail WHERE username = ?";
+                        try (PreparedStatement checkPst = con.prepareStatement(checkQuery)) {
+                            checkPst.setString(1, login_enter_username.getText());
+                            try (ResultSet rs = checkPst.executeQuery()) {
+                                if (rs.next()) {
+                                    String storedPassword = rs.getString("password");
+                                    if (storedPassword.equals(login_enter_password.getText())) {
+                                        // Credentials are correct, open the Expense_frame
+                                        JOptionPane.showMessageDialog(this, "Login in succesful !!");
+                                        openFrontPage();
+                                    } else {
+                                        JOptionPane.showMessageDialog(this, "Incorrect password!!");
+                                    }
                                 } else {
-                                    JOptionPane.showMessageDialog(this, "Incorrect password!!");
+                                    JOptionPane.showMessageDialog(this, "Username does not exist!!");
                                 }
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Username does not exist!!");
                             }
                         }
                     }
+                } catch (ClassNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, "Database Driver not found: " + ex.getMessage());
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
                 }
-            } catch (ClassNotFoundException ex) {
-                JOptionPane.showMessageDialog(this, "Database Driver not found: " + ex.getMessage());
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
-            }
-        });
-    }
-        
+            });
+        }
+
     }//GEN-LAST:event_login_to_front_pageActionPerformed
-private void openFrontPage() {
-    // Create an instance of the FrontPage
-    FrontPage fp = new FrontPage(login_enter_username.getText());
-    fp.setVisible(true);
-    // Optionally, dispose of the current login frame
-    this.dispose();
-}
+    private void openFrontPage() {
+        // Create an instance of the FrontPage
+        FrontPage fp = new FrontPage(login_enter_username.getText());
+        fp.setVisible(true);
+        // Optionally, dispose of the current login frame
+        this.dispose();
+    }
 
     /**
      * @param args the command line arguments

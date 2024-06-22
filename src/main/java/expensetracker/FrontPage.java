@@ -25,13 +25,15 @@ public class FrontPage extends javax.swing.JFrame {
 
     /**
      * Creates new form demoframe
+     *
+     * @param username
      */
     public FrontPage(String username) {
         initComponents();
         this.username = username;
         // Display the username in a JLabel or JTextField
         username_display_text.setText(username);
-        // Retrieve the balance_money value from the database
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String db = "jdbc:mysql://localhost:3306/expensetracker";
@@ -40,10 +42,48 @@ public class FrontPage extends javax.swing.JFrame {
 
             Connection con = DriverManager.getConnection(db, dbUsername, dbPassword);
 
-            String query = "SELECT balance_money FROM user_detail WHERE username =?";
+            // Initialize the display table
+            DefaultTableModel model = (DefaultTableModel) display_expense_table.getModel();
+            model.setRowCount(0);
+
+            String query = "SELECT purpose, money, date, category FROM add_expenditure WHERE username =? ORDER BY date DESC";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, username);
             ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String purpose = rs.getString("purpose");
+                double money = rs.getDouble("money");
+                Date date = rs.getDate("date");
+                String category = rs.getString("category");
+
+                Object[] row = {purpose, money, date, category};
+                model.addRow(row);
+            }
+
+            // Initialize the category amounts
+            query = "SELECT cloths, grocery, gadgets, books FROM category_table WHERE username =?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                int clothsAmount = rs.getInt("cloths");
+                int groceryAmount = rs.getInt("grocery");
+                int gadgetsAmount = rs.getInt("gadgets");
+                int booksAmount = rs.getInt("books");
+
+                cloths_display_text.setText("Cloths: " + clothsAmount);
+                grocery_display_text.setText("Grocery: " + groceryAmount);
+                gadgets_display_text.setText("Gadgets: " + gadgetsAmount);
+                books_display_text.setText("Books: " + booksAmount);
+            }
+
+            // Retrieve the balance_money value from the database
+            query = "SELECT balance_money FROM user_detail WHERE username =?";
+            pst = con.prepareStatement(query);
+            pst.setString(1, username);
+            rs = pst.executeQuery();
 
             if (rs.next()) {
                 String balanceMoney = rs.getString("balance_money");
@@ -103,24 +143,25 @@ public class FrontPage extends javax.swing.JFrame {
         display_expense_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        enter_money_text = new javax.swing.JTextField();
-        choosing_date = new com.toedter.calendar.JDateChooser();
-        jLabel5 = new javax.swing.JLabel();
-        grocery_box = new javax.swing.JRadioButton();
-        cloths_box = new javax.swing.JRadioButton();
-        books_box = new javax.swing.JRadioButton();
-        gadgets_box = new javax.swing.JRadioButton();
-        add_expense_btn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         balance_amount_display_text = new javax.swing.JLabel();
-        enter_purpose_text = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        enter_purpose_text = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        enter_money_text = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        choosing_date = new com.toedter.calendar.JDateChooser();
+        grocery_box = new javax.swing.JRadioButton();
+        books_box = new javax.swing.JRadioButton();
+        cloths_box = new javax.swing.JRadioButton();
+        gadgets_box = new javax.swing.JRadioButton();
+        add_expense_btn = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -135,7 +176,8 @@ public class FrontPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setBackground(new java.awt.Color(238, 229, 243));
+        jPanel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 4));
 
         profile_text.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         profile_text.setText("PROFILE");
@@ -144,33 +186,33 @@ public class FrontPage extends javax.swing.JFrame {
         profile_text1.setText("Username : ");
 
         username_display_text.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
-        username_display_text.setText("username_text");
+        username_display_text.setText("username");
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
+                .addContainerGap(106, Short.MAX_VALUE)
+                .addComponent(profile_text)
+                .addGap(92, 92, 92))
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(45, 45, 45)
                 .addComponent(profile_text1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(username_display_text)
-                .addContainerGap(28, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(profile_text)
-                .addGap(92, 92, 92))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(profile_text)
-                .addGap(26, 26, 26)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(profile_text1)
                     .addComponent(username_display_text))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(102, 0, 102));
@@ -190,34 +232,33 @@ public class FrontPage extends javax.swing.JFrame {
         gadgets_display_text.setBackground(new java.awt.Color(255, 255, 255));
         gadgets_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         gadgets_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        gadgets_display_text.setText("Gadgets Amount");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addComponent(gadgets_display_text)
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel15)
-                        .addGap(15, 15, 15))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(42, 42, 42))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel15))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap(28, Short.MAX_VALUE)
+                        .addComponent(jLabel10)))
+                .addGap(30, 30, 30))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(gadgets_display_text))
-                .addGap(35, 35, 35))
+                    .addComponent(gadgets_display_text)
+                    .addComponent(jLabel15))
+                .addGap(36, 36, 36))
         );
 
         jPanel4.setBackground(new java.awt.Color(102, 0, 102));
@@ -234,23 +275,21 @@ public class FrontPage extends javax.swing.JFrame {
         cloths_display_text.setBackground(new java.awt.Color(255, 204, 255));
         cloths_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cloths_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        cloths_display_text.setText("Cloths Amount");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(cloths_display_text)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel14))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jLabel9)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addComponent(jLabel9)
+                .addContainerGap(43, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(cloths_display_text)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addGap(28, 28, 28))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,7 +313,6 @@ public class FrontPage extends javax.swing.JFrame {
         books_display_text.setBackground(new java.awt.Color(255, 204, 255));
         books_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         books_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        books_display_text.setText("Books Amount");
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
@@ -285,26 +323,26 @@ public class FrontPage extends javax.swing.JFrame {
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addComponent(books_display_text)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel18)
-                .addContainerGap(27, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(29, 29, 29))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
                 .addComponent(jLabel11)
-                .addGap(55, 55, 55))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(books_display_text)
-                    .addComponent(jLabel18))
-                .addGap(31, 31, 31))
+                    .addComponent(jLabel18)
+                    .addComponent(books_display_text))
+                .addGap(33, 33, 33))
         );
 
         jPanel3.setBackground(new java.awt.Color(102, 0, 102));
@@ -317,7 +355,6 @@ public class FrontPage extends javax.swing.JFrame {
         grocery_display_text.setBackground(new java.awt.Color(255, 255, 255));
         grocery_display_text.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         grocery_display_text.setForeground(new java.awt.Color(255, 255, 255));
-        grocery_display_text.setText("Grocery Amount");
 
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
@@ -329,30 +366,29 @@ public class FrontPage extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(grocery_display_text)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel20)
-                        .addGap(19, 19, 19))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(39, 39, 39))))
+                .addComponent(grocery_display_text)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel20)
+                .addGap(19, 19, 19))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel6)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(43, 43, 43)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(grocery_display_text)
                     .addComponent(jLabel20))
                 .addGap(31, 31, 31))
         );
 
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel8.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 0, 102)));
+        jPanel8.setBackground(new java.awt.Color(238, 229, 243));
+        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 4));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel19.setText("INR");
@@ -381,40 +417,87 @@ public class FrontPage extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(enter_amount_text_box, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(36, 36, 36)
                         .addComponent(jLabel17))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
+                        .addGap(44, 44, 44)
+                        .addComponent(enter_amount_text_box, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel19))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
                         .addComponent(add_the_money_in_db, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel17)
-                .addGap(50, 50, 50)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(enter_amount_text_box, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(42, 42, 42)
+                .addGap(22, 22, 22)
                 .addComponent(add_the_money_in_db, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                .addGap(50, 50, 50))
         );
 
         display_expense_table.setAutoCreateRowSorter(true);
-        display_expense_table.setFont(new java.awt.Font("SimSun", 0, 18)); // NOI18N
+        display_expense_table.setBackground(new java.awt.Color(102, 0, 102));
+        display_expense_table.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
+        display_expense_table.setForeground(new java.awt.Color(255, 255, 255));
         display_expense_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -432,6 +515,10 @@ public class FrontPage extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        display_expense_table.setAlignmentX(1.0F);
+        display_expense_table.setAlignmentY(1.0F);
+        display_expense_table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        display_expense_table.setRowHeight(30);
         display_expense_table.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 display_expense_tableComponentAdded(evt);
@@ -464,71 +551,8 @@ public class FrontPage extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("Purpose : ");
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("Date :");
-
-        enter_money_text.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        enter_money_text.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enter_money_textActionPerformed(evt);
-            }
-        });
-
-        choosing_date.setToolTipText("date\n");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel5.setText("Money : ");
-
-        grocery_box.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        grocery_box.setText("Grocery");
-        grocery_box.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grocery_boxActionPerformed(evt);
-            }
-        });
-
-        cloths_box.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cloths_box.setText("Cloths");
-        cloths_box.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cloths_boxActionPerformed(evt);
-            }
-        });
-
-        books_box.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        books_box.setText("Books");
-        books_box.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                books_boxActionPerformed(evt);
-            }
-        });
-
-        gadgets_box.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        gadgets_box.setText("Gadgets");
-        gadgets_box.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gadgets_boxActionPerformed(evt);
-            }
-        });
-
-        add_expense_btn.setBackground(new java.awt.Color(102, 0, 102));
-        add_expense_btn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        add_expense_btn.setForeground(new java.awt.Color(255, 255, 255));
-        add_expense_btn.setText("Add Expense");
-        add_expense_btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                add_expense_btnActionPerformed(evt);
-            }
-        });
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(102, 0, 102)));
+        jPanel2.setBackground(new java.awt.Color(238, 229, 243));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 4));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel8.setText("MY BALANCE");
@@ -537,43 +561,36 @@ public class FrontPage extends javax.swing.JFrame {
         jLabel16.setText("INR");
 
         balance_amount_display_text.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        balance_amount_display_text.setText("Balance Amount :");
+        balance_amount_display_text.setText("Balance : ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addComponent(balance_amount_display_text)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addGap(61, 61, 61))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(balance_amount_display_text)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(67, 67, 67))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
                     .addComponent(balance_amount_display_text))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        enter_purpose_text.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        enter_purpose_text.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enter_purpose_textActionPerformed(evt);
-            }
-        });
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBackground(new java.awt.Color(238, 229, 243));
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 3));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Recent Transactions History");
@@ -583,16 +600,16 @@ public class FrontPage extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(160, 160, 160)
                 .addComponent(jLabel1)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel10.setBackground(new java.awt.Color(102, 0, 102));
@@ -605,7 +622,145 @@ public class FrontPage extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 679, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel12.setBackground(new java.awt.Color(238, 229, 243));
+        jPanel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 4));
+
+        enter_purpose_text.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        enter_purpose_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enter_purpose_textActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Purpose : ");
+
+        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel5.setText("Money : ");
+
+        enter_money_text.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        enter_money_text.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enter_money_textActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setText("Date :");
+
+        choosing_date.setToolTipText("date\n");
+
+        grocery_box.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        grocery_box.setText("Grocery");
+        grocery_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grocery_boxActionPerformed(evt);
+            }
+        });
+
+        books_box.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        books_box.setText("Books");
+        books_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                books_boxActionPerformed(evt);
+            }
+        });
+
+        cloths_box.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        cloths_box.setText("Cloths");
+        cloths_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cloths_boxActionPerformed(evt);
+            }
+        });
+
+        gadgets_box.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
+        gadgets_box.setText("Gadgets");
+        gadgets_box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gadgets_boxActionPerformed(evt);
+            }
+        });
+
+        add_expense_btn.setBackground(new java.awt.Color(102, 0, 102));
+        add_expense_btn.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        add_expense_btn.setForeground(new java.awt.Color(255, 255, 255));
+        add_expense_btn.setText("Add Expense");
+        add_expense_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_expense_btnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(books_box, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cloths_box))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(gadgets_box)
+                    .addComponent(grocery_box))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel12Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(enter_purpose_text, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel12Layout.createSequentialGroup()
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(158, 158, 158))
+                                .addGroup(jPanel12Layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addGap(6, 6, 6)
+                                    .addComponent(enter_money_text, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(choosing_date, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                        .addComponent(add_expense_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56))))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(enter_purpose_text, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enter_money_text, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(choosing_date, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(grocery_box)
+                    .addComponent(books_box))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cloths_box)
+                    .addComponent(gadgets_box))
+                .addGap(29, 29, 29)
+                .addComponent(add_expense_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -618,112 +773,67 @@ public class FrontPage extends javax.swing.JFrame {
                     .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(25, 25, 25)
+                .addGap(49, 49, 49)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(95, 95, 95))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(53, 53, 53)
+                        .addGap(47, 47, 47)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
+                        .addGap(57, 57, 57)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(30, 30, 30)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(choosing_date, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(enter_money_text, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(enter_purpose_text, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGap(20, 20, 20)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(grocery_box)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(books_box, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(cloths_box, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(gadgets_box)
-                                            .addGap(15, 15, 15))
-                                        .addComponent(add_expense_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(86, 86, 86))))
+                        .addGap(48, 48, 48)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 85, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(54, 54, 54)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(54, 54, 54)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(80, 80, 80)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(enter_purpose_text, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(172, 172, 172))
+                                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(enter_money_text, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(40, 40, 40)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(choosing_date, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cloths_box, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(gadgets_box))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(grocery_box)
-                            .addComponent(books_box))
-                        .addGap(28, 28, 28)
-                        .addComponent(add_expense_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 29, Short.MAX_VALUE))
+                                .addGap(24, 24, 24)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36))))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -758,6 +868,24 @@ public class FrontPage extends javax.swing.JFrame {
                 return;
             }
 
+            DefaultTableModel model = (DefaultTableModel) display_expense_table.getModel();
+            model.setRowCount(0);
+
+            String queryDisplay = "SELECT purpose, money, date, category FROM add_expenditure WHERE username =? ORDER BY date DESC";
+            PreparedStatement pstDisplay = con.prepareStatement(queryDisplay);
+            pstDisplay.setString(1, username);
+            ResultSet rsDisplay = pstDisplay.executeQuery();
+
+            while (rsDisplay.next()) {
+                String purpose = rsDisplay.getString("purpose");
+                double money = rsDisplay.getDouble("money");
+                Date date = rsDisplay.getDate("date");
+                String category = rsDisplay.getString("category");
+
+                Object[] row = {purpose, money, date, category};
+                model.addRow(row);
+            }
+
             // Add the amount to the current balance
             currentBalance += amount;
 
@@ -769,7 +897,7 @@ public class FrontPage extends javax.swing.JFrame {
             pst.executeUpdate();
 
             // Update the balance_amount_display_text component
-            balance_amount_display_text.setText("Balance Amount : " + currentBalance);
+            balance_amount_display_text.setText("Balance : " + currentBalance);
 
             con.close();
         } catch (ClassNotFoundException ex) {
@@ -781,8 +909,6 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_add_the_money_in_dbActionPerformed
 
     private void display_expense_tableComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_display_expense_tableComponentAdded
-        // TODO add your handling code here:
-        // Retrieve the expenditure data from the database
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String db = "jdbc:mysql://localhost:3306/expensetracker";
@@ -790,33 +916,29 @@ public class FrontPage extends javax.swing.JFrame {
             String dbPassword = "";
 
             Connection con = DriverManager.getConnection(db, dbUsername, dbPassword);
+            DefaultTableModel model = (DefaultTableModel) display_expense_table.getModel();
+            model.setRowCount(0);
 
-            String query = "SELECT * FROM add_expenditure WHERE username =?";
+            String query = "SELECT purpose, money, date, category FROM add_expenditure WHERE username =? ORDER BY date DESC";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, username);
             ResultSet rs = pst.executeQuery();
 
-            // Create a table model to store the data
-            DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("Purpose");
-            model.addColumn("Money");
-            model.addColumn("Date");
-            model.addColumn("Category");
-
-            // Add the data to the table model
             while (rs.next()) {
-                Object[] row = {rs.getString("purpose"), rs.getString("money"), rs.getDate("date"), rs.getString("category")};
+                String purpose = rs.getString("purpose");
+                double money = rs.getDouble("money");
+                Date date = rs.getDate("date");
+                String category = rs.getString("category");
+
+                Object[] row = {purpose, money, date, category};
                 model.addRow(row);
             }
 
-            // Set the table model to the display_expense_table
-            display_expense_table.setModel(model);
-
             con.close();
-        } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, "Database Driver not found: " + ex.getMessage());
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FrontPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_display_expense_tableComponentAdded
 
@@ -830,22 +952,22 @@ public class FrontPage extends javax.swing.JFrame {
     String category = "";
     private void gadgets_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gadgets_boxActionPerformed
         // TODO add your handling code here:
-        category = "Gadgets";
+//        category = "Gadgets";
     }//GEN-LAST:event_gadgets_boxActionPerformed
 
     private void books_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_books_boxActionPerformed
         // TODO add your handling code here:
-        category = "Books";
+//        category = "Books";
     }//GEN-LAST:event_books_boxActionPerformed
 
     private void grocery_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grocery_boxActionPerformed
         // TODO add your handling code here:
-        category = "Grocery";
+//        category = "Grocery";
     }//GEN-LAST:event_grocery_boxActionPerformed
 
     private void cloths_boxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cloths_boxActionPerformed
         // TODO add your handling code here:
-        category = "Cloths";
+//        category = "Cloths";
     }//GEN-LAST:event_cloths_boxActionPerformed
 
     private void enter_purpose_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enter_purpose_textActionPerformed
@@ -869,7 +991,7 @@ public class FrontPage extends javax.swing.JFrame {
         } else if (books_box.isSelected()) {
             category = "Books";
         }
-// Balance amount ko kam karna hai
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String db = "jdbc:mysql://localhost:3306/expensetracker";
@@ -881,56 +1003,117 @@ public class FrontPage extends javax.swing.JFrame {
             // Update the respective display text
             switch (category) {
                 case "Cloths":
-
-                    cloths_display_text.setText("Cloths: " + money);
-                    break;
-                case "Grocery":
-                    grocery_display_text.setText("Grocery: " + money);
-                    break;
-                case "Gadgets":
-                    int gadgetsAmount = 0; // initialization
-                    String query = "SELECT Gadgets FROM category_table WHERE username = ?";
+                    int clothsAmount = 0; // initialization
+                    String query = "SELECT Cloths FROM category_table WHERE username =?";
                     PreparedStatement pst = con.prepareStatement(query);
                     pst.setString(1, username);
                     ResultSet rs = pst.executeQuery();
 
                     if (rs.next()) {
-                        gadgetsAmount = rs.getInt("gadgets");
+                        clothsAmount = rs.getInt("cloths");
+                    }
+
+                    // Add the incoming money to the cloths amount
+                    clothsAmount += money;
+                    // Update the cloths amount in category_table
+                    query = "UPDATE category_table SET cloths =? WHERE username =?";
+                    pst = con.prepareStatement(query);
+                    pst.setInt(1, clothsAmount);
+                    pst.setString(2, username);
+                    pst.executeUpdate();
+                    cloths_display_text.setText("Cloths: " + clothsAmount);
+                    break;
+                case "Grocery":
+                    int groceryAmount = 0; // initialization
+                    String query1 = "SELECT Grocery FROM category_table WHERE username =?";
+                    PreparedStatement pst1 = con.prepareStatement(query1);
+                    pst1.setString(1, username);
+                    ResultSet rs1 = pst1.executeQuery();
+
+                    if (rs1.next()) {
+                        groceryAmount = rs1.getInt("grocery");
+                    }
+
+                    // Add the incoming groceryAmount to the grocery amount
+                    groceryAmount += money;
+
+                    // Update the grocery amount in category_table
+                    query1 = "UPDATE category_table SET grocery =? WHERE username =?";
+                    pst1 = con.prepareStatement(query1);
+                    pst1.setInt(1, groceryAmount);
+                    pst1.setString(2, username);
+                    pst1.executeUpdate();
+                    grocery_display_text.setText("Grocery: " + groceryAmount);
+                    break;
+                case "Gadgets":
+                    int gadgetsAmount = 0; // initialization
+                    String query2 = "SELECT Gadgets FROM category_table WHERE username =?";
+                    PreparedStatement pst2 = con.prepareStatement(query2);
+                    pst2.setString(1, username);
+                    ResultSet rs2 = pst2.executeQuery();
+
+                    if (rs2.next()) {
+                        gadgetsAmount = rs2.getInt("gadgets");
                     }
 
                     // Add the incoming money to the gadgets amount
                     gadgetsAmount += money;
 
                     // Update the gadgets amount in category_table
-                    query = "UPDATE category_table SET gadgets = ? WHERE username = ?";
+                    query = "UPDATE category_table SET gadgets =? WHERE username =?";
                     pst = con.prepareStatement(query);
                     pst.setInt(1, gadgetsAmount);
                     pst.setString(2, username);
                     pst.executeUpdate();
 
                     // Update the gadgets_display_text to the new amount
-                    gadgets_display_text.setText("Gadgets: " + gadgetsAmount);
+                    gadgets_display_text.setText("Gadgets Amt. : " + gadgetsAmount);
                     break;
 
                 case "Books":
-                    books_display_text.setText("Books: " + money);
+                    int booksAmount = 0; // initialization
+                    String query3 = "SELECT Books FROM category_table WHERE username =?";
+                    PreparedStatement pst3 = con.prepareStatement(query3);
+                    pst3.setString(1, username);
+                    ResultSet rs3 = pst3.executeQuery();
+
+                    if (rs3.next()) {
+                        booksAmount = rs3.getInt("books");
+                    }
+
+                    // Add the incoming money to the books amount
+                    booksAmount += money;
+
+                    // Update the books amount in category_table
+                    query = "UPDATE category_table SET books =? WHERE username =?";
+                    pst = con.prepareStatement(query);
+                    pst.setInt(1, booksAmount);
+                    pst.setString(2, username);
+                    pst.executeUpdate();
+                    books_display_text.setText("Books Amt. : " + booksAmount);
                     break;
             }
 
-            // Update the category column in the user_detail table
-            String query = "UPDATE category_table SET "
-                    + "cloths = CASE WHEN category = 'Cloths' THEN cloths + ? ELSE cloths END, "
-                    + "grocery = CASE WHEN category = 'Grocery' THEN grocery + ? ELSE grocery END, "
-                    + "gadgets = CASE WHEN category = 'Gadgets' THEN gadgets + ? ELSE gadgets END, "
-                    + "books = CASE WHEN category = 'Books' THEN books + ? ELSE books END "
-                    + "WHERE username = ?";
+            // Update the balance_money in user_detail table
+            String query = "SELECT balance_money FROM user_detail WHERE username =?";
             PreparedStatement pst = con.prepareStatement(query);
-            pst.setDouble(1, money);
-            pst.setDouble(2, money);
-            pst.setDouble(3, money);
-            pst.setDouble(4, money);
-            pst.setString(5, username);
+            pst.setString(1, username);
+            ResultSet rs = pst.executeQuery();
+
+            double balanceMoney = 0;
+            if (rs.next()) {
+                balanceMoney = rs.getDouble("balance_money");
+            }
+
+            balanceMoney -= money;
+
+            query = "UPDATE user_detail SET balance_money =? WHERE username =?";
+            pst = con.prepareStatement(query);
+            pst.setDouble(1, balanceMoney);
+            pst.setString(2, username);
             pst.executeUpdate();
+
+            balance_amount_display_text.setText("Balance: " + balanceMoney); // Update the balance_amount_display_text
 
             // Update the add_expenditure table
             query = "INSERT INTO add_expenditure (username, purpose, money, date, category) VALUES (?, ?, ?, ?, ?)";
@@ -950,7 +1133,7 @@ public class FrontPage extends javax.swing.JFrame {
                 query = "SELECT * FROM add_expenditure WHERE username =? ORDER BY date DESC";
                 pst = con.prepareStatement(query);
                 pst.setString(1, username);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
 
                 while (rs.next()) {
                     Object[] row = {rs.getString("purpose"), rs.getString("money"), rs.getDate("date"), rs.getString("category")};
@@ -1042,6 +1225,7 @@ public class FrontPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
